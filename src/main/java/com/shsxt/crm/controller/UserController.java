@@ -1,5 +1,6 @@
 package com.shsxt.crm.controller;
 
+import com.shsxt.crm.exceptions.ParamException;
 import com.shsxt.crm.model.ResultInfo;
 import com.shsxt.crm.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,19 @@ public class UserController {
     @RequestMapping("login")
     @ResponseBody
     public ResultInfo login(String userName,String userPwd){
-        return userService.login(userName,userPwd);
+        ResultInfo info = new ResultInfo();
+        try {
+            userService.login(userName,userPwd);//捕获代码块ctrl+alt+t
+            info.setCode(200);
+            info.setMsg("登录成功");
+        } catch (ParamException e) {
+            info.setCode(300);
+            info.setMsg(e.getMsg());
+        } catch (Exception e) {
+            info.setCode(300);
+            info.setMsg(e.getMessage());
+        }
+
+        return info;
     }
 }
