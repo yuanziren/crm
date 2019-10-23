@@ -1,0 +1,2 @@
+快速展开和折叠代码 ctrl + shift + -/=
+替换 ctrl + r
