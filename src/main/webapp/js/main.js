@@ -12,3 +12,12 @@ function openTab(text, url, iconCls){
     }
 }
 
+function logout() {
+    $.messager.confirm('来自crm','您确定要退出系统吗？',function (r) {
+        if(r){
+            window.location.href=ctx+'/index';
+        }
+    })
+
+}
+
