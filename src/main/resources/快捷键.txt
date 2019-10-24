@@ -1,2 +1,3 @@
 快速展开和折叠代码 ctrl + shift + -/=
 替换 ctrl + r
+浏览器强制刷新 ctrl + shift + r
