@@ -87,6 +87,7 @@
 
 <!-- END JAVASCRIPTS -->
 <script src="${ctx}/jquery-easyui-1.3.3/jquery.min.js"></script>
+<script src="${ctx}/js/jquery.cookie.js"></script>
 <script src="${ctx}/js/index.js"></script>
 <script src="${ctx}/js/common.js"></script>
 <script>

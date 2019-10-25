@@ -3,6 +3,7 @@ package com.shsxt.crm.model;
 public class ResultInfo {
     private Integer code;
     private String msg;
+    private Object result;
 
     public ResultInfo() {
     }
@@ -26,5 +27,13 @@ public class ResultInfo {
 
     public void setMsg(String msg) {
         this.msg = msg;
+    }
+
+    public Object getResult() {
+        return result;
+    }
+
+    public void setResult(Object result) {
+        this.result = result;
     }
 }

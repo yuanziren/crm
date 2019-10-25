@@ -24,6 +24,8 @@ function login() {
         success:function (data) {
             //console.log(data);
             if(data.code==200){
+                //存Cookie信息
+                $.cookie("userIdStr",data.result.userIdStr);
                 alert(data.msg);
                 // 跳转到主页
                 window.location.href = ctx + '/main';

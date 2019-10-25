@@ -15,6 +15,8 @@ function openTab(text, url, iconCls){
 function logout() {
     $.messager.confirm('来自crm','您确定要退出系统吗？',function (r) {
         if(r){
+            //清除Cookie
+            $.removeCookie("userIdStr");
             window.location.href=ctx+'/index';
         }
     })

@@ -2,9 +2,11 @@ package com.shsxt.crm.service;
 
 import com.shsxt.crm.dao.UserMapper;
 import com.shsxt.crm.model.ResultInfo;
+import com.shsxt.crm.model.UserInfo;
 import com.shsxt.crm.po.User;
 import com.shsxt.crm.utils.AssertUtil;
 import com.shsxt.crm.utils.Md5Util;
+import com.shsxt.crm.utils.UserIDBase64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -20,7 +22,7 @@ public class UserService {
      * @param userName
      * @param userPwd
      */
-    public void login(String userName,String userPwd) {
+    public UserInfo login(String userName, String userPwd) {
 
         /**
          * 1、参数校验（非空判断）
@@ -38,5 +40,9 @@ public class UserService {
          * 后台是密文，前台是明文
          */
         AssertUtil.isTrue(!user.getUserPwd().equals(Md5Util.encode(userPwd)), "用户名或密码不正确");
+        UserInfo userInfo = new UserInfo();
+        userInfo.setUserIdStr(UserIDBase64.encoderUserID(user.getId()));
+        return userInfo;
+
     }
 }
