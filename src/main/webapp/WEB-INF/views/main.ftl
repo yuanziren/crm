@@ -65,7 +65,7 @@
 </div>
 
 <div id="dlg" class="easyui-dialog" style="width:400px;height:250px;padding: 10px 20px"
-     closed="true" buttons="#dlg-buttons">
+     closed="true" buttons="#dlg-buttons" title="修改密码">
 
     <form id="fm" method="post">
         <table cellspacing="8px">

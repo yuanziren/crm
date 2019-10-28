@@ -117,4 +117,9 @@
     SELECT * FROM t_user where is_valid=1 and user_name=#{userName}
   </select>
 
+  <!--更新密码-->
+  <update id="updateUserPwd">
+    UPDATE t_user SET user_pwd=#{userPwd} where id=#{id}
+  </update>
+
 </mapper>
