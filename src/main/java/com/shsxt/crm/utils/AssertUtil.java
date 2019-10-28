@@ -2,6 +2,8 @@ package com.shsxt.crm.utils;
 
 import com.shsxt.crm.exceptions.ParamException;
 
+import javax.security.auth.login.LoginException;
+
 
 public class AssertUtil {
 
@@ -19,4 +21,10 @@ public class AssertUtil {
         }
     }
 
+    public static void isNotLogin(boolean flag, String msg) throws LoginException {
+        if(flag){
+            // 抛异常
+            throw new LoginException(msg);
+        }
+    }
 }

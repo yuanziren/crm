@@ -17,33 +17,45 @@ import java.lang.reflect.Method;
 @Component
 public class GlobalExceptionResolver implements HandlerExceptionResolver {
     @Override
-    public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object target, Exception e) {
+    public ModelAndView resolveException(HttpServletRequest request,
+                                         HttpServletResponse response,
+                                         Object target, Exception ex) {
 
-        ModelAndView mv = createDefaultModelAndView(request,e);
-        /**
-         *区分：json请求和普通页面请求
+        ModelAndView mv = createDefaultModelAndView(request,ex);
+        /***
+         * 区分: json请求和普通页面请求
          * 通过 注解@ResponseBody
          * target 就是要访问的controller的方法
-         */
-//        System.out.println(target);
+         * */
+        //System.out.println(target);
+
+        if(ex instanceof LoginException){
+            LoginException e = (LoginException) ex;
+            mv.addObject("errorMsg", e.getMsg());
+            mv.setViewName("login_error");
+        }
+
 
         if(target instanceof HandlerMethod){
             HandlerMethod handlerMethod = (HandlerMethod) target;
             Method method = handlerMethod.getMethod();
             ResponseBody responseBody = method.getAnnotation(ResponseBody.class);
-            if (null == responseBody){
+            if(null==responseBody){
                 // 代表访问的是一个普通页面请求
-                ParamException ex = (ParamException) e;
-                mv.addObject("errorMsg",ex.getMsg());// 设置错误信息
-            } else {
+                if(ex instanceof ParamException){
+                    ParamException e = (ParamException) ex;
+                    mv.addObject("errorMsg", e.getMsg());// 设置错误信息
+                }
+
+            }else{
                 // 代表访问的是一个json请求
                 ResultInfo info = new ResultInfo();
                 info.setCode(300);
                 info.setMsg("系统繁忙");
 
-                if(e instanceof ParamException){
-                    ParamException ex = (ParamException) e;
-                    info.setMsg(ex.getMsg());
+                if(ex instanceof ParamException){
+                    ParamException e = (ParamException) ex;
+                    info.setMsg(e.getMsg());
                 }
                 // 输出json数据
                 response.setCharacterEncoding("utf-8");
@@ -55,8 +67,8 @@ public class GlobalExceptionResolver implements HandlerExceptionResolver {
                     pw.write(JSON.toJSONString(info));
                     pw.flush();
                     pw.close();
-                } catch (IOException ex) {
-                    ex.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 } finally {
                     if(null!=pw){
                         pw.close();
@@ -64,16 +76,15 @@ public class GlobalExceptionResolver implements HandlerExceptionResolver {
                 }
             }
         }
-
         return mv;
     }
 
-    private ModelAndView createDefaultModelAndView(HttpServletRequest request, Exception e) {
+    public ModelAndView createDefaultModelAndView(HttpServletRequest request, Exception ex){
         ModelAndView mv = new ModelAndView();
         mv.setViewName("error");// 设置默认错误视图
-        mv.addObject("errorMsg",e.getMessage());// 设置报错信息
-        mv.addObject("ctx",request.getContextPath());// 设置项目路径
-        mv.addObject("uri",request.getRequestURI());// 设置访问路径
+        mv.addObject("errorMsg", ex.getMessage());// 设置报错信息
+        mv.addObject("ctx", request.getContextPath());// 设置项目路径
+        mv.addObject("uri", request.getRequestURI());// 设置访问路径
         return mv;
     }
 }
