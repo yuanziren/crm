@@ -24,24 +24,15 @@ public class UserController {
     @ResponseBody
     public ResultInfo login(String userName,String userPwd){
         ResultInfo info = new ResultInfo();
-        try {
-            UserInfo userInfo = userService.login(userName, userPwd);//捕获代码块ctrl+alt+t
-            info.setResult(userInfo);
-            info.setCode(200);
-            info.setMsg("登录成功");
-        } catch (ParamException e) {
-            info.setCode(300);
-            info.setMsg(e.getMsg());
-        } catch (Exception e) {
-            info.setCode(300);
-            info.setMsg(e.getMessage());
-        }
-
+        UserInfo userInfo = userService.login(userName, userPwd);//捕获代码块ctrl+alt+t
+        info.setResult(userInfo);
+        info.setCode(200);
+        info.setMsg("登录成功");
         return info;
     }
 
 
-    //http://localhost:8080/crm/user/updateUserPwd?oldPassword=1&newPassword=2&confrimPassword=2
+    //http://localhost:8080/crm/user/updateUserPwd?oldPassword=1&newPassword=2&confirmPassword=2
     @RequestMapping("updateUserPwd")
     @ResponseBody
     public ResultInfo updateUserPwd(String oldPassword,
@@ -50,21 +41,10 @@ public class UserController {
                                     HttpServletRequest request){
         ResultInfo info = new ResultInfo();
         Integer userId = LoginUserUtil.releaseUserIdFromCookie(request);
-
         //获取用户Id
-        try {
-            userService.updateUserPwd(oldPassword,newPassword,confirmPassword,userId);
-            info.setCode(200);
-            info.setMsg("修改成功");
-        } catch (ParamException e) {
-            info.setCode(300);
-            info.setMsg(e.getMsg());
-            e.printStackTrace();
-        } catch (Exception e) {
-            info.setCode(300);
-            info.setMsg(e.getMessage());
-            e.printStackTrace();
-        }
+        userService.updateUserPwd(oldPassword,newPassword,confirmPassword,userId);
+        info.setCode(200);
+        info.setMsg("修改成功");
         return info;
     }
 }
