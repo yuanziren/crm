@@ -6,6 +6,7 @@
 
     <typeAliases>
         <package name="com.shsxt.crm.po"/>
+        <package name="com.shsxt.crm.query"/>
     </typeAliases>
 
     <plugins>
