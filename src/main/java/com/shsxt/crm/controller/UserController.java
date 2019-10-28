@@ -1,6 +1,6 @@
 package com.shsxt.crm.controller;
 
-import com.shsxt.crm.exceptions.ParamException;
+import com.shsxt.crm.base.BaseController;
 import com.shsxt.crm.model.ResultInfo;
 import com.shsxt.crm.model.UserInfo;
 import com.shsxt.crm.service.UserService;
@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping("user")
-public class UserController {
+public class UserController extends BaseController {
 
     @Autowired
     private UserService userService;
@@ -23,12 +23,8 @@ public class UserController {
     @RequestMapping("login")
     @ResponseBody
     public ResultInfo login(String userName,String userPwd){
-        ResultInfo info = new ResultInfo();
         UserInfo userInfo = userService.login(userName, userPwd);//捕获代码块ctrl+alt+t
-        info.setResult(userInfo);
-        info.setCode(200);
-        info.setMsg("登录成功");
-        return info;
+        return success("登录成功",userInfo);
     }
 
 
@@ -39,12 +35,9 @@ public class UserController {
                                     String newPassword,
                                     String confirmPassword,
                                     HttpServletRequest request){
-        ResultInfo info = new ResultInfo();
         Integer userId = LoginUserUtil.releaseUserIdFromCookie(request);
         //获取用户Id
         userService.updateUserPwd(oldPassword,newPassword,confirmPassword,userId);
-        info.setCode(200);
-        info.setMsg("修改成功");
-        return info;
+        return success("修改成功");
     }
 }
