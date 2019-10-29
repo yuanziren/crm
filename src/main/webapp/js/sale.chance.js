@@ -38,3 +38,63 @@ function querySaleChancesByParams() {
         createDate: $('#time').datebox('getValue')
     })
 }
+
+$(function () {
+    // 页面加载完成后执行
+    $('#dg').datagrid({
+        rowStyler: function(index,row){
+            var devResult = row.devResult;
+
+            // if (devResult==0){
+            //     return 'background-color:blue;';
+            // }
+            // if (devResult==1){
+            //     return 'background-color:yellow;';
+            // }
+            // if (devResult==2){
+            //     return 'background-color:green;';
+            // }
+            // if (devResult==3){
+            //     return 'background-color:red;';
+            // }
+
+            if (devResult == 0) {
+                return "background-color:#5bc0de;"; // 蓝色
+            } else if (devResult == 1) {
+                return "background-color:#f0ad4e;"; // 黄色
+            } else if (devResult == 2) {
+                return "background-color:#5cb85c;"; // 绿色
+            } else if (devResult == 3) {
+                return "background-color:#d9534f;"; // 红色
+            }
+        }
+    });
+
+});
+
+function openAddSaleChacneDialog() {
+    $('#dlg').dialog('open');
+}
+
+function saveOrUpdateSaleChance() {
+    $('#fm').form('submit', {
+        url: ctx + '/saleChance/saveOrUpdateSaleChance',
+        onSubmit: function () {
+            return $(this).form('validate');	// 返回false终止表单提交
+        },
+        success: function (data) {
+            data = JSON.parse(data);// 手动解析json
+            if(data.code==200){
+
+                $.messager.alert('来自crm',data.msg,'info',function () {
+                    // 关闭弹窗
+                    $('#dlg').dialog('close')
+                    // 刷新数据
+                    $('#dg').datagrid('load')
+                });
+            }else{
+                $.messager.alert('来自crm',data.msg,'error');
+            }
+        }
+    });
+}
