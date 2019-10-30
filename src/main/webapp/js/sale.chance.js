@@ -98,3 +98,27 @@ function saveOrUpdateSaleChance() {
         }
     });
 }
+
+//更新
+function openModifySaleChanceDialog () {
+    /***
+     * 1. 判断是否没选或者多选
+     * 2. 回填数据
+     * */
+
+    var rows = $('#dg').datagrid('getSelections');
+    //console.log(rows);
+    if(rows.length<1){
+        $.messager.alert('来自crm', '请选择一条记录进行更新','info')
+        return;
+    }
+    if(rows.length>1){
+        $.messager.alert('来自crm', '只能选择一条记录进行更新','info')
+        return;
+    }
+
+
+    $('#fm').form('load',rows[0]);
+    $('#dlg').dialog('open').dialog('setTitle',"修改营销机会");
+
+}

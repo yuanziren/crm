@@ -53,7 +53,7 @@ public class SaleChanceService extends BaseService<SaleChance> {
             AssertUtil.isTrue(saleChanceMapper.save(saleChance)<1,"添加失败");
         }else {
             //更新
-            AssertUtil.isTrue(saleChanceMapper.save(saleChance)<1,"更新失败");
+            AssertUtil.isTrue(saleChanceMapper.update(saleChance)<1,"更新失败");
         }
     }
 
