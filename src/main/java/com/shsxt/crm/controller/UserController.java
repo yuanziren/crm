@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("user")
@@ -39,5 +41,15 @@ public class UserController extends BaseController {
         //获取用户Id
         userService.updateUserPwd(oldPassword,newPassword,confirmPassword,userId);
         return success("修改成功");
+    }
+
+    /**
+     * 查询所有的客户经理
+     * @return
+     */
+    @RequestMapping("queryCustomerManagers")
+    @ResponseBody
+    public List<Map> queryCustomerManagers(){
+        return userService.queryCustomerManagers();
     }
 }

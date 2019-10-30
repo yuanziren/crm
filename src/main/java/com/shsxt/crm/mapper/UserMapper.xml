@@ -122,4 +122,19 @@
     UPDATE t_user SET user_pwd=#{userPwd} where id=#{id}
   </update>
 
+  <!--查询所有客户经理-->
+  <select id="queryCustomerManagers" resultType="map">
+    SELECT
+    u.id,
+    u.true_name as trueName
+    FROM
+    t_user AS u
+    INNER JOIN t_user_role AS ur ON ur.user_id = u.id
+    INNER JOIN t_role AS r ON r.id = ur.role_id
+    WHERE
+    u.is_valid = 1 AND
+    r.role_name = '客户经理'
+
+  </select>
+
 </mapper>

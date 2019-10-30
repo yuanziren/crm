@@ -12,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.List;
+import java.util.Map;
+
 @Service
 public class UserService extends BaseService<User> {
 
@@ -77,6 +80,14 @@ public class UserService extends BaseService<User> {
         AssertUtil.isTrue(StringUtils.isEmpty(oldPassword),"旧密码为空");
         AssertUtil.isTrue(StringUtils.isEmpty(newPassword),"新密码为空");
         AssertUtil.isTrue(!newPassword.equals(confrimPassword),"两次密码输入不一致");
+    }
+
+    /**
+     * 查询所有的客户经理
+     * @return
+     */
+    public List<Map> queryCustomerManagers(){
+        return userMapper.queryCustomerManagers();
     }
 
 
