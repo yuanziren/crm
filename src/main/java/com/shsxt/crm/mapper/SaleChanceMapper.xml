@@ -184,8 +184,8 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-    <!--分页查询-->
-    <select id="queryByParams" parameterType="SaleChanceQuery" resultMap="BaseResultMap">
+  <!--分页查询-->
+  <select id="queryByParams" parameterType="SaleChanceQuery" resultMap="BaseResultMap">
         SELECT * from t_sale_chance
         <where>
             is_valid=1
@@ -203,4 +203,12 @@
             </if>
         </where>
     </select>
+  <!--批量删除-->
+  <update id="deleteBatch">
+    UPDATE t_sale_chance SET is_valid=0 WHERE id IN (
+    <foreach collection="array" item="item" separator=",">
+      #{item}
+    </foreach>
+    )
+  </update>
 </mapper>

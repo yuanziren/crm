@@ -46,4 +46,11 @@ public class SaleChanceController extends BaseController {
         saleChanceService.saveOrUpdateSaleChance(saleChance,userId);
         return success("操作成功");
     }
+
+    @RequestMapping("deleteSaleChanceBatch")
+    @ResponseBody
+    public ResultInfo deleteSaleChanceBatch(Integer[] ids){
+        saleChanceService.deleteBatch(ids);
+        return success("操作成功");
+    }
 }

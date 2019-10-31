@@ -116,9 +116,41 @@ function openModifySaleChanceDialog () {
         $.messager.alert('来自crm', '只能选择一条记录进行更新','info')
         return;
     }
-
-
     $('#fm').form('load',rows[0]);
     $('#dlg').dialog('open').dialog('setTitle',"修改营销机会");
+}
 
+function deleteSaleChance() {
+    var rows = $('#dg').datagrid('getSelections');
+    //console.log(rows);
+    if(rows.length<1) {
+        $.messager.alert('来自crm', '请选择一条记录进行删除', 'info')
+        return;
+    }
+    if(rows.length>=1){
+        $.messager.confirm('来自crm', '是否删除'+rows.length+'条记录?',function (r) {
+            if(r){
+                //传参格式: ?ids=1&ids=2
+                var ids = '';
+                for(var i=0;i<rows.length;i++){
+                    ids += 'ids='+rows[i].id+'&';
+                }
+                //console.log(ids);
+                $.ajax({
+                    url: ctx + '/saleChance/deleteSaleChanceBatch?'+ids,
+                    type: 'post',
+                    success:function (data) {
+                        if(data.code==200){
+                            $.messager.alert('来自crm',data.msg,'info',function () {
+                                // 刷新数据
+                                $('#dg').datagrid('load')
+                            });
+                        }else{
+                            $.messager.alert('来自crm',data.msg,'error');
+                        }
+                    }
+                });
+            }
+        })
+    }
 }
