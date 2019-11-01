@@ -1,3 +1,4 @@
+
 function formatterDevResult(val) {
     if(val==0){
         return "未开发";
@@ -12,7 +13,6 @@ function formatterDevResult(val) {
         return "开发失败";
     }
 }
-
 function formatterOp(val, row) {
     // var devResult = row.devResult;
     // if(devResult==2 || devResult==3){
