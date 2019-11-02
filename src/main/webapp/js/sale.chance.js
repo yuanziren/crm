@@ -154,3 +154,11 @@ function deleteSaleChance() {
         })
     }
 }
+
+$(function () {
+    $('#dlg').dialog({
+        onClose:function () {
+            $('#fm').form('clear');//清空表单
+        }
+    })
+});

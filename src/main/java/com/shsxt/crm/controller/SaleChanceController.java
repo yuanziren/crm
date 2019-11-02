@@ -1,6 +1,7 @@
 package com.shsxt.crm.controller;
 
 import com.shsxt.crm.base.BaseController;
+import com.shsxt.crm.constants.CrmConstant;
 import com.shsxt.crm.model.ResultInfo;
 import com.shsxt.crm.po.SaleChance;
 import com.shsxt.crm.query.SaleChanceQuery;
@@ -58,5 +59,12 @@ public class SaleChanceController extends BaseController {
     public ResultInfo deleteSaleChanceBatch(Integer[] ids){
         saleChanceService.deleteBatch(ids);
         return success("操作成功");
+    }
+
+    @RequestMapping("updateDevResult")
+    @ResponseBody
+    public ResultInfo updateDevResult(SaleChance saleChance){
+        saleChanceService.updateDevResult(saleChance);
+        return success(CrmConstant.OPS_SUCCESS_MSG);
     }
 }

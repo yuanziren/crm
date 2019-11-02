@@ -7,3 +7,4 @@
 <script>
     var ctx = "${ctx}";
 </script>
+<script type="text/javascript" src="${ctx}/js/base.js"></script>

@@ -73,9 +73,9 @@ function updateSaleChanceDevResult(devResult) {
         }
     })
 }
+//这里是个巨大的坑，找半天都没找到这个操作条为什么不显示的原因
 
 $(function () {
-
     var devResult = $('#devResult').val();
     if(devResult==2 || devResult==3){
         // 隐藏操作条

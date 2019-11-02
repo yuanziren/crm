@@ -57,5 +57,9 @@ public class SaleChanceService extends BaseService<SaleChance> {
         }
     }
 
+    public Integer updateDevResult(SaleChance saleChance){
+        return saleChanceMapper.updateDevResult(saleChance);
+    }
+
 
 }
