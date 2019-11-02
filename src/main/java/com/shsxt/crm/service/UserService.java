@@ -201,4 +201,23 @@ public class UserService extends BaseService<UserDto> {
         return map;
     }
 
+    public void deleteUserBatch(Integer[] ids){
+        /***
+         * 1. 删除当前用户
+         * 2. 删除用户角色
+         * */
+        if(null!=ids && ids.length>0){
+            for(Integer id: ids){
+                //删除用户
+                AssertUtil.isTrue(userMapper.delete(id)<1, CrmConstant.OPS_FAILED_MSG);
+//                int i=1/0;
+                //删除角色
+                Integer total = userRoleMapper.queryUserRoleByUserId(id);
+                if(total>0){
+                    AssertUtil.isTrue(userRoleMapper.deleteUserRoleByUserId(id)<total, CrmConstant.OPS_FAILED_MSG);
+                }
+            }
+        }
+    }
+
 }

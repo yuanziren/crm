@@ -80,4 +80,11 @@ public class UserController extends BaseController {
         userService.saveOrUpdateUser(userDto);
         return success(CrmConstant.OPS_SUCCESS_MSG);
     }
+
+    @RequestMapping("deleteUserBatch")
+    @ResponseBody
+    public ResultInfo deleteUserBatch(Integer[] ids){
+        userService.deleteUserBatch(ids);
+        return success(CrmConstant.OPS_SUCCESS_MSG);
+    }
 }

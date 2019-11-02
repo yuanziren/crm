@@ -114,16 +114,13 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-
   <select id="queryUserByName" parameterType="string" resultMap="BaseResultMap">
     SELECT * FROM t_user where is_valid=1 and user_name=#{userName}
   </select>
-
   <!--更新密码-->
   <update id="updateUserPwd">
     UPDATE t_user SET user_pwd=#{userPwd} where id=#{id}
   </update>
-
   <!--查询所有客户经理-->
   <select id="queryCustomerManagers" resultType="map">
     SELECT
@@ -138,7 +135,6 @@
     r.role_name = '客户经理'
 
   </select>
-
   <select id="queryByParams" parameterType="UserQuery" resultMap="BaseResultMap">
     SELECT
     u.*,
@@ -162,5 +158,7 @@
     </where>
     GROUP BY u.id
   </select>
-
+  <update id="delete" parameterType="int">
+    UPDATE t_user SET is_valid=0 WHERE id=#{id}
+  </update>
 </mapper>
