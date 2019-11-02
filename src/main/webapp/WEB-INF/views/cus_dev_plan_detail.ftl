@@ -59,10 +59,17 @@
 </div>
 <br/>
 
-
+<div <#--id="toolbar"-->>
+    <a href="javascript:addRow()" class="easyui-linkbutton" iconCls="icon-add"  plain="true" >添加计划</a>
+    <a href="javascript:delCusDevPlan()" class="easyui-linkbutton" iconCls="icon-remove" plain="true" >删除计划</a>
+    <a href="javascript:saveOrUpdateCusDevPlan()" class="easyui-linkbutton" iconCls="icon-save" plain="true" >保存计划</a>
+    <a href="javascript:$('#dg').edatagrid('cancelRow')" class="easyui-linkbutton" iconCls="icon-undo" plain="true" >撤销行</a>
+    <a href="javascript:updateSaleChanceDevResult(2)" class="easyui-linkbutton" iconCls="icon-kfcg" plain="true" >开发成功</a>
+    <a href="javascript:updateSaleChanceDevResult(3)" class="easyui-linkbutton" iconCls="icon-zzkf" plain="true" >终止开发</a>
+</div>
 <#--开发计划详情记录-->
 <table id="dg" title="开发计划项" style="width:700px;height: 300px;"
-       toolbar="#toolbar" idField="id" pagination="true" rownumbers="true"   >
+       toolbar="#toolbar" idField="id" pagination="true" rownumbers="true">
     <thead>
     <tr>
         <th field="id" width="50">编号</th>
@@ -73,16 +80,6 @@
     </thead>
 </table>
 
-<div id="toolbar">
-    <a href="javascript:addRow()" class="easyui-linkbutton" iconCls="icon-add"  plain="true" >添加计划</a>
-    <a href="javascript:delCusDevPlan()" class="easyui-linkbutton" iconCls="icon-remove" plain="true" >删除计划</a>
-    <a href="javascript:saveOrUpdateCusDevPlan()" class="easyui-linkbutton" iconCls="icon-save" plain="true" >保存计划</a>
-    <a href="javascript:$('#dg').edatagrid('cancelRow')" class="easyui-linkbutton" iconCls="icon-undo" plain="true" >撤销行</a>
-    <a href="javascript:updateSaleChanceDevResult(2)" class="easyui-linkbutton" iconCls="icon-kfcg" plain="true" >开发成功</a>
-    <a href="javascript:updateSaleChanceDevResult(3)" class="easyui-linkbutton" iconCls="icon-zzkf" plain="true" >终止开发</a>
-</div>
-
 <script type="text/javascript" src="${ctx}/jquery-easyui-1.3.3/jquery.edatagrid.js"></script>
 <script type="text/javascript" src="${ctx}/js/cus.dev.plan.detail.js"></script>
-
 </body>

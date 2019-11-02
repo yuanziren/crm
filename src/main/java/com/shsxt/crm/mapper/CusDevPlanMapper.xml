@@ -106,4 +106,13 @@
   <select id="queryByParams" parameterType="CusDevPlanQuery" resultMap="BaseResultMap">
     SELECT * from t_cus_dev_plan WHERE is_valid=1 and sale_chance_id=#{sid}
   </select>
+
+  <!-- 批量删除 -->
+  <update id="deleteBatch">
+    UPDATE t_cus_dev_plan set is_valid=0 where id in (
+    <foreach collection="array" item="item" separator=",">
+      #{item}
+    </foreach>
+    )
+  </update>
 </mapper>
