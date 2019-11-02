@@ -12,6 +12,7 @@
     <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
     <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
     <result column="role_name" property="roleName"></result>
+    <result column="roleIdStr" property="roleIdStr"></result>
   </resultMap>
   <sql id="Base_Column_List" >
     id, user_name, user_pwd, true_name, email, phone, is_valid, create_date, update_date
@@ -141,7 +142,8 @@
   <select id="queryByParams" parameterType="UserQuery" resultMap="BaseResultMap">
     SELECT
     u.*,
-    GROUP_CONCAT(r.role_name) role_name
+    GROUP_CONCAT(r.role_name) role_name,
+    GROUP_CONCAT(r.id) roleIdStr
     FROM
     t_user AS u
     LEFT JOIN t_user_role AS ur ON u.id = ur.user_id

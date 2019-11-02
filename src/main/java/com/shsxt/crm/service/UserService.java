@@ -1,5 +1,7 @@
 package com.shsxt.crm.service;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.shsxt.crm.base.BaseService;
 import com.shsxt.crm.constants.CrmConstant;
 import com.shsxt.crm.dao.UserMapper;
@@ -9,18 +11,17 @@ import com.shsxt.crm.model.ResultInfo;
 import com.shsxt.crm.model.UserInfo;
 import com.shsxt.crm.po.User;
 import com.shsxt.crm.po.UserRole;
+import com.shsxt.crm.query.UserQuery;
 import com.shsxt.crm.utils.AssertUtil;
 import com.shsxt.crm.utils.Md5Util;
 import com.shsxt.crm.utils.UserIDBase64;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class UserService extends BaseService<UserDto> {
@@ -138,6 +139,12 @@ public class UserService extends BaseService<UserDto> {
             // 用户更新
             AssertUtil.isTrue(userMapper.update(userDto)<1, CrmConstant.OPS_FAILED_MSG);
 
+            // 角色更新
+            // 1. 删除角色
+            Integer total = userRoleMapper.queryUserRoleByUserId(id);
+            if(total>0){
+                AssertUtil.isTrue(userRoleMapper.deleteUserRoleByUserId(id)<total, CrmConstant.OPS_FAILED_MSG);
+            }
 
         }
         /***
@@ -168,6 +175,30 @@ public class UserService extends BaseService<UserDto> {
         AssertUtil.isTrue(StringUtils.isEmpty(userDto.getTrueName()), "真实姓名为空");
         AssertUtil.isTrue(StringUtils.isEmpty(userDto.getEmail()), "邮箱为空");
         AssertUtil.isTrue(StringUtils.isEmpty(userDto.getPhone()), "手机为空");
+    }
+
+    public Map<String,Object> queryForPage(UserQuery baseQuery) throws DataAccessException {
+        PageHelper.startPage(baseQuery.getPageNum(),baseQuery.getPageSize());
+        List<UserDto> entities=userMapper.queryByParams(baseQuery);
+        PageInfo<UserDto> pageInfo=new PageInfo<UserDto>(entities);
+
+        // 获取分页的集合,取到1,2,3 转换成 [1,2,3]
+        List<UserDto> userDtoList = pageInfo.getList();
+        for(UserDto userDto : userDtoList){
+            String roleIdStr = userDto.getRoleIdStr();// 1,2,3
+            if(null!=roleIdStr){
+                String[] idArr = roleIdStr.split(",");
+                List<Integer> roleIds = userDto.getRoleIds();
+                for(String id : idArr){
+                    roleIds.add(Integer.valueOf(id));
+                }
+            }
+        }
+
+        Map<String,Object> map=new HashMap<String,Object>();
+        map.put("total",pageInfo.getTotal());
+        map.put("rows",pageInfo.getList());
+        return map;
     }
 
 }

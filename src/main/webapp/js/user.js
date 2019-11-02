@@ -13,3 +13,11 @@ function openAddUserDailog () {
 function saveOrUpdateUser() {
     saveOrUpdateData('fm',ctx + '/user/saveOrUpdateUser','dlg',queryUsersByParams);
 }
+
+function openModifyUserDialog () {
+    openModifyDialog('dg','fm','dlg','更新用户')
+}
+
+function deleteUser () {
+    deleteData('dg',ctx + '/user/deleteUserBatch',queryUsersByParams);
+}
