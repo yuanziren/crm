@@ -1,25 +1,35 @@
 package com.shsxt.crm.service;
 
 import com.shsxt.crm.base.BaseService;
+import com.shsxt.crm.constants.CrmConstant;
 import com.shsxt.crm.dao.UserMapper;
+import com.shsxt.crm.dao.UserRoleMapper;
+import com.shsxt.crm.dto.UserDto;
 import com.shsxt.crm.model.ResultInfo;
 import com.shsxt.crm.model.UserInfo;
 import com.shsxt.crm.po.User;
+import com.shsxt.crm.po.UserRole;
 import com.shsxt.crm.utils.AssertUtil;
 import com.shsxt.crm.utils.Md5Util;
 import com.shsxt.crm.utils.UserIDBase64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 @Service
-public class UserService extends BaseService<User> {
+public class UserService extends BaseService<UserDto> {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private UserRoleMapper userRoleMapper;
 
     /**
      * 用户登录
@@ -90,5 +100,74 @@ public class UserService extends BaseService<User> {
         return userMapper.queryCustomerManagers();
     }
 
+
+    public void saveOrUpdateUser(UserDto userDto){
+        /***
+         * 1. 校验参数
+         * 2. 补全参数
+         * 3. 区分添加和更新
+         * 4. 执行操作
+         * */
+        checkUserParams(userDto);
+        Integer id = userDto.getId();
+        userDto.setUpdateDate(new Date());
+
+        if (null == id){
+            AssertUtil.isTrue(null!=userMapper.queryUserByName(userDto.getUserName()), "用户名已存在");
+            /***
+             * 设置默认密码: 123456
+             * 注意: 加密
+             * */
+            userDto.setUserPwd(Md5Util.encode("123456"));
+            userDto.setIsValid(1);
+            userDto.setCreateDate(new Date());
+            AssertUtil.isTrue(userMapper.save(userDto)<1, CrmConstant.OPS_FAILED_MSG);
+        } else {
+            /**
+             * 用户更新用户名
+             * 1. 通过id查询数据库名字
+             * 2. 如果一致,则表示用户不修改用户名;
+             * 3. 否则,用户在修改用户名,就需要做唯一校验
+             * */
+
+            String oldUserName = userMapper.queryById(id).getUserName();
+            if(!oldUserName.equals(userDto.getUserName())){
+                AssertUtil.isTrue(null!=userMapper.queryUserByName(userDto.getUserName()), "用户名已存在");
+            }
+
+            // 用户更新
+            AssertUtil.isTrue(userMapper.update(userDto)<1, CrmConstant.OPS_FAILED_MSG);
+
+
+        }
+        /***
+         * 用户角色添加
+         * */
+
+        List<UserRole> userRoleList = new ArrayList<>();
+
+        List<Integer> roleIds = userDto.getRoleIds();
+        if(!CollectionUtils.isEmpty(roleIds)){
+            for(Integer roleId : roleIds){
+                UserRole userRole = new UserRole();
+                userRole.setUserId(userDto.getId());// 设置用户id
+                userRole.setRoleId(roleId);
+                userRole.setCreateDate(new Date());
+                userRole.setUpdateDate(new Date());
+                userRoleList.add(userRole);
+            }
+            AssertUtil.isTrue(userRoleMapper.saveBatch(userRoleList)<userRoleList.size(),CrmConstant.OPS_FAILED_MSG);
+        }
+
+
+    }
+
+    private void checkUserParams(UserDto userDto) {
+        String userName = userDto.getUserName();
+        AssertUtil.isTrue(StringUtils.isEmpty(userName), "用户名为空");
+        AssertUtil.isTrue(StringUtils.isEmpty(userDto.getTrueName()), "真实姓名为空");
+        AssertUtil.isTrue(StringUtils.isEmpty(userDto.getEmail()), "邮箱为空");
+        AssertUtil.isTrue(StringUtils.isEmpty(userDto.getPhone()), "手机为空");
+    }
 
 }

@@ -1,13 +1,18 @@
 package com.shsxt.crm.controller;
 
 import com.shsxt.crm.base.BaseController;
+import com.shsxt.crm.constants.CrmConstant;
+import com.shsxt.crm.dto.UserDto;
 import com.shsxt.crm.model.ResultInfo;
 import com.shsxt.crm.model.UserInfo;
+import com.shsxt.crm.query.SaleChanceQuery;
+import com.shsxt.crm.query.UserQuery;
 import com.shsxt.crm.service.UserService;
 import com.shsxt.crm.utils.LoginUserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +25,11 @@ public class UserController extends BaseController {
 
     @Autowired
     private UserService userService;
+
+    @RequestMapping("index")
+    public String index(){
+        return "user";
+    }
 
     //http://localhost:8080/crm/user/login?userName=shsxt&userPwd=123
     @RequestMapping("login")
@@ -51,5 +61,23 @@ public class UserController extends BaseController {
     @ResponseBody
     public List<Map> queryCustomerManagers(){
         return userService.queryCustomerManagers();
+    }
+
+    @RequestMapping("queryUsersByParams")
+    @ResponseBody
+    public Map<String, Object> queryUsersByParams(
+            @RequestParam(defaultValue = "1") Integer page,
+            @RequestParam(defaultValue = "10") Integer rows,
+            UserQuery query){
+        query.setPageNum(page);
+        query.setPageSize(rows);
+        return userService.queryForPage(query);
+    }
+
+    @RequestMapping("saveOrUpdateUser")
+    @ResponseBody
+    public ResultInfo saveOrUpdateUser(UserDto userDto) {
+        userService.saveOrUpdateUser(userDto);
+        return success(CrmConstant.OPS_SUCCESS_MSG);
     }
 }
