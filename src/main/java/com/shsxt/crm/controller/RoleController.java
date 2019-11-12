@@ -1,6 +1,9 @@
 package com.shsxt.crm.controller;
 
 import com.shsxt.crm.base.BaseController;
+import com.shsxt.crm.constants.CrmConstant;
+import com.shsxt.crm.model.ResultInfo;
+import com.shsxt.crm.po.Role;
 import com.shsxt.crm.query.RoleQuery;
 import com.shsxt.crm.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +43,13 @@ public class RoleController extends BaseController {
         query.setPageNum(page);
         query.setPageSize(rows);
         return roleService.queryForPage(query);
+    }
+
+    @RequestMapping("saveOrUpdateRole")
+    @ResponseBody
+    public ResultInfo saveOrUpdateRole(Role role){
+        roleService.saveOrUpdateRole(role);
+        return success(CrmConstant.OPS_SUCCESS_MSG);
     }
 
 }
