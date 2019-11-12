@@ -100,4 +100,17 @@
     WHERE
     r.is_valid = 1
   </select>
+
+  <select id="queryByParams" parameterType="RoleQuery" resultMap="BaseResultMap">
+    SELECT * from t_role
+    <where>
+      is_valid=1
+      <if test="null!=roleName and ''!=roleName">
+        and role_name like concat('%',#{roleName},'%')
+      </if>
+      <if test="null!=createDate and ''!=createDate">
+        and createDate &lt;= #{createDate}
+      </if>
+    </where>
+  </select>
 </mapper>
