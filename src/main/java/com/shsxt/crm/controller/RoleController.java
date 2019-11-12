@@ -52,4 +52,11 @@ public class RoleController extends BaseController {
         return success(CrmConstant.OPS_SUCCESS_MSG);
     }
 
+    @RequestMapping("doGrant")
+    @ResponseBody
+    public ResultInfo doGrant(Integer roleId, Integer[] moduleIds){
+        roleService.doGrant(roleId, moduleIds);
+        return success(CrmConstant.OPS_SUCCESS_MSG);
+    }
+
 }

@@ -12,13 +12,13 @@
   <sql id="Base_Column_List" >
     id, role_id, module_id, acl_value, create_date, update_date
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="queryById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from t_permission
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="delete" parameterType="java.lang.Integer" >
     delete from t_permission
     where id = #{id,jdbcType=INTEGER}
   </delete>
@@ -30,7 +30,7 @@
       #{aclValue,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.shsxt.crm.po.Permission" >
+  <insert id="save" parameterType="com.shsxt.crm.po.Permission" >
     insert into t_permission
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -73,7 +73,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.shsxt.crm.po.Permission" >
+  <update id="update" parameterType="com.shsxt.crm.po.Permission" >
     update t_permission
     <set >
       <if test="roleId != null" >
@@ -94,13 +94,20 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.shsxt.crm.po.Permission" >
-    update t_permission
-    set role_id = #{roleId,jdbcType=INTEGER},
-      module_id = #{moduleId,jdbcType=INTEGER},
-      acl_value = #{aclValue,jdbcType=VARCHAR},
-      create_date = #{createDate,jdbcType=TIMESTAMP},
-      update_date = #{updateDate,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+
+  <insert id="saveBatch" parameterType="list" >
+    insert into t_permission (role_id, module_id, acl_value, create_date, update_date)
+    values
+    <foreach collection="list" separator="," item="item">
+      (#{item.roleId}, #{item.moduleId},#{item.aclValue}, #{item.createDate}, #{item.updateDate})
+    </foreach>
+  </insert>
+
+  <delete id="deletePermissionByRoleId" parameterType="int">
+    DELETE FROM t_permission WHERE role_id=#{roleId}
+  </delete>
+
+  <select id="queryPermissionByRoleId" parameterType="int" resultType="int">
+    SELECT COUNT(*) FROM t_permission WHERE role_id = #{roleId}
+  </select>
 </mapper>

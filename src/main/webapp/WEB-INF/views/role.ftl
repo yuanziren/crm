@@ -1,9 +1,9 @@
 <html>
 <head>
 <#include "common.ftl" >
-<#--<link rel="stylesheet" href="${ctx}/zTree_v3-3.5.32/css/zTreeStyle/zTreeStyle.css" type="text/css">-->
-<#--<script type="text/javascript" src="${ctx}/zTree_v3-3.5.32/js/jquery.ztree.core.js"></script>-->
-<#--<script type="text/javascript" src="${ctx}/zTree_v3-3.5.32/js/jquery.ztree.excheck.min.js"></script>-->
+<link rel="stylesheet" href="${ctx}/zTree_v3-3.5.32/css/zTreeStyle/zTreeStyle.css" type="text/css">
+<script type="text/javascript" src="${ctx}/zTree_v3-3.5.32/js/jquery.ztree.core.js"></script>
+<script type="text/javascript" src="${ctx}/zTree_v3-3.5.32/js/jquery.ztree.excheck.min.js"></script>
 <script type="text/javascript" src="${ctx}/js/role.js"></script>
 </head>
 <body style="margin: 1px">
