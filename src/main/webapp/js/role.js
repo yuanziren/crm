@@ -29,30 +29,85 @@ function openRelationPermissionDialog() {
         return;
     }
 
-    doGrant(rows[0].id);// 角色id
+    openPermissionTree(rows[0].id);// 角色id
 }
+/**
+ var treeObj = $.fn.zTree.getZTreeObj("tree");
+ var nodes = treeObj.getCheckedNodes(true);
 
-function doGrant(roleId) {
+ function zTreeOnCheck(event, treeId, treeNode) {
+    alert(treeNode.tId + ", " + treeNode.name + "," + treeNode.checked);
+};
+ var setting = {
+	callback: {
+		onCheck: zTreeOnCheck
+	}
+};
+
+ * */
+
+var treeObj;
+
+function openPermissionTree(roleId) {
+// 记录roleId到隐藏域
+    $('#roleId').val(roleId);
+
     $.ajax({
         url: ctx + '/module/queryAllModuleByRoleId?roleId=' + roleId,
         success: function (data) {
             var setting = {
                 check: {
                     enable: true,
-                    chkboxType: { "Y" : "ps", "N" : "ps" }
+                    chkboxType: {"Y": "ps", "N": "ps"}
                 },
                 data: {
                     simpleData: {
                         enable: true
                     }
+                },
+                callback: {
+                    onCheck: zTreeOnCheck
                 }
             };
-
-            var zNodes =[{"id":1,"pId":null,"name":"营销管理","checked":false},{"id":2,"pId":1,"name":"营销机会管理","checked":false},{"id":3,"pId":2,"name":"营销机会管理查询","checked":false},{"id":4,"pId":2,"name":"营销机会管理添加修改","checked":false},{"id":5,"pId":2,"name":"营销机会管理删除","checked":false},{"id":6,"pId":1,"name":"客户开发计划","checked":false},{"id":7,"pId":6,"name":"查看详情","checked":false},{"id":8,"pId":null,"name":"客户管理","checked":false},{"id":9,"pId":8,"name":"客户信息管理","checked":false},{"id":10,"pId":9,"name":"创建","checked":false},{"id":11,"pId":9,"name":"修改","checked":false},{"id":12,"pId":8,"name":"客户流失管理","checked":false},{"id":13,"pId":12,"name":"暂缓流失","checked":false},{"id":14,"pId":null,"name":"统计报表","checked":false},{"id":15,"pId":14,"name":"客户贡献分析","checked":false},{"id":16,"pId":null,"name":"服务管理","checked":false},{"id":17,"pId":null,"name":"基础数据管理","checked":false},{"id":18,"pId":null,"name":"系统管理","checked":false},{"id":19,"pId":9,"name":"删除","checked":false},{"id":26,"pId":18,"name":"用户管理","checked":false},{"id":27,"pId":18,"name":"角色管理","checked":false},{"id":28,"pId":18,"name":"资源管理","checked":false},{"id":29,"pId":18,"name":"修改密码","checked":false},{"id":30,"pId":18,"name":"安全退出","checked":false},{"id":34,"pId":16,"name":"服务创建","checked":false},{"id":35,"pId":16,"name":"服务分配","checked":false},{"id":36,"pId":16,"name":"服务处理","checked":false},{"id":37,"pId":16,"name":"服务反馈","checked":false},{"id":38,"pId":16,"name":"服务归档","checked":false},{"id":39,"pId":14,"name":"客户构成分析","checked":false},{"id":40,"pId":14,"name":"客户服务分析","checked":false}];
-
-            $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+            var zNodes = data;
+            treeObj = $.fn.zTree.init($("#treeDemo"), setting, zNodes);
 
             openAddOrUpdateDlg('permissionDlg', '授权')
         }
     })
+}
+
+function zTreeOnCheck(event, treeId, treeNode) {
+    var nodes = treeObj.getCheckedNodes(true);
+    //console.log(nodes);
+
+    var moduleIds = '';
+
+    for(var i=0;i<nodes.length;i++){
+        moduleIds +='moduleIds='+nodes[i].id+'&';
+    }
+    //console.log(moduleIds);
+    $('#moduleIds').val(moduleIds);
+};
+
+function doGrant() {
+    $.ajax({
+        url: ctx + '/role/doGrant?roleId='+$('#roleId').val()+'&'+$('#moduleIds').val(),
+        success:function (data) {
+            if(data.code==200){
+                $.messager.alert('来自crm',data.msg,'info',function () {
+                    // 刷新数据
+                    $('#dg').datagrid('load')
+                    // 关闭弹窗
+                    closeDlgData("permissionDlg")
+                });
+            }else{
+                $.messager.alert('来自crm',data.msg,'error');
+            }
+        }
+    })
+}
+
+function deleteRole() {
+    deleteData('dg',ctx + '/role/deleteRole',queryRolesByParams);
 }

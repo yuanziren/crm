@@ -108,4 +108,13 @@
   <select id="queryUserRoleByRoleId" parameterType="int" resultType="int">
     SELECT count(*) FROM t_user_role WHERE role_id=#{roleId}
   </select>
+
+  <!-- 通过roleId删除角色 -->
+  <delete id="deleteUserRoleByRoleId" parameterType="int">
+    DELETE FROM t_user_role WHERE role_id=#{roleId}
+  </delete>
+  <!-- 通过roleId查询角色 -->
+  <select id="queryUserRoleByRoleId" parameterType="int" resultType="int">
+    SELECT count(*) FROM t_user_role WHERE role_id=#{roleId}
+  </select>
 </mapper>

@@ -117,4 +117,8 @@
   <select id="queryRoleByName" parameterType="string" resultMap="BaseResultMap">
     SELECT * from t_role WHERE is_valid=1 and role_name=#{roleName}
   </select>
+
+  <update id="delete" parameterType="int">
+    UPDATE t_role set is_valid=0 where id=#{id}
+  </update>
 </mapper>
