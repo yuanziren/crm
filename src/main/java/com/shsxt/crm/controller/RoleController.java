@@ -59,4 +59,11 @@ public class RoleController extends BaseController {
         return success(CrmConstant.OPS_SUCCESS_MSG);
     }
 
+    @RequestMapping("deleteRole")
+    @ResponseBody
+    public ResultInfo deleteRole(Integer[] ids){
+        roleService.deleteRole(ids);
+        return success(CrmConstant.OPS_SUCCESS_MSG);
+    }
+
 }

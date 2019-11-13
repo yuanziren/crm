@@ -5,6 +5,7 @@ import com.shsxt.crm.constants.CrmConstant;
 import com.shsxt.crm.dao.ModuleMapper;
 import com.shsxt.crm.dao.PermissionMapper;
 import com.shsxt.crm.dao.RoleMapper;
+import com.shsxt.crm.dao.UserRoleMapper;
 import com.shsxt.crm.po.Permission;
 import com.shsxt.crm.po.Role;
 import com.shsxt.crm.utils.AssertUtil;
@@ -27,6 +28,9 @@ public class RoleService extends BaseService<Role> {
 
     @Autowired
     private ModuleMapper moduleMapper;
+
+    @Autowired
+    private UserRoleMapper userRoleMapper;
 
     public List<Map> queryAllRoles(){
         return roleMapper.queryAllRoles();
@@ -79,4 +83,24 @@ public class RoleService extends BaseService<Role> {
             AssertUtil.isTrue(permissionMapper.saveBatch(permissionList)<permissionList.size(), CrmConstant.OPS_FAILED_MSG);
         }
     }
+
+    public void deleteRole(Integer[] ids){
+        if(null!=ids && ids.length>0){
+            for(Integer id:ids){
+                // 1. 删除角色
+                AssertUtil.isTrue(roleMapper.delete(id)<1, CrmConstant.OPS_FAILED_MSG);
+                // 2. 删除用户_角色
+                Integer total01 = userRoleMapper.queryUserRoleByRoleId(id);
+                if(total01>0){
+                    AssertUtil.isTrue(userRoleMapper.deleteUserRoleByRoleId(id)<total01, CrmConstant.OPS_FAILED_MSG);
+                }
+                // 3. 删除权限(角色_模块)
+                Integer total02 = permissionMapper.queryPermissionByRoleId(id);
+                if (total02 > 0) {
+                    AssertUtil.isTrue(permissionMapper.deletePermissionByRoleId(id) < total02, CrmConstant.OPS_FAILED_MSG);
+                }
+            }
+        }
+    }
+
 }

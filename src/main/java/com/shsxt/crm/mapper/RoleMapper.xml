@@ -18,14 +18,6 @@
     from t_role
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <insert id="insert" parameterType="com.shsxt.crm.po.Role" >
-    insert into t_role (id, role_name, role_remark,
-      create_date, update_date, is_valid
-      )
-    values (#{id,jdbcType=INTEGER}, #{roleName,jdbcType=VARCHAR}, #{roleRemark,jdbcType=VARCHAR},
-      #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}, #{isValid,jdbcType=INTEGER}
-      )
-  </insert>
   <insert id="save" parameterType="com.shsxt.crm.po.Role" >
     insert into t_role
     <trim prefix="(" suffix=")" suffixOverrides="," >
