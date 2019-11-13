@@ -166,4 +166,34 @@
     m.is_valid = 1
   </select>
 
+  <select id="queryByParams" parameterType="moduleQuery" resultMap="BaseResultMap">
+    SELECT  * from t_module
+    <where>
+      is_valid=1
+      <if test="null!=moduleName and ''!=moduleName">
+        and module_name like concat('%',#{moduleName},'%')
+      </if>
+      <if test="null!=parentId">
+        and parent_id like concat('%',#{parentId},'%')
+      </if>
+      <if test="null!=grade">
+        and grade = #{grade}
+      </if>
+      <if test="null!=optValue and ''!=optValue">
+        and opt_value like concat('%',#{optValue},'%')
+      </if>
+    </where>
+  </select>
+
+  <select id="queryModuleByGrade" parameterType="int" resultType="map">
+    SELECT
+    m.module_name AS moduleName,
+    m.id
+    FROM
+    t_module AS m
+    WHERE
+    m.is_valid = 1 AND
+    m.grade = #{grade}
+  </select>
+
 </mapper>

@@ -1,5 +1,7 @@
 package com.shsxt.crm.po;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class Module {
@@ -22,9 +24,9 @@ public class Module {
     private Integer orders;
 
     private Byte isValid;
-
+    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss", timezone = "GMT+8")
     private Date createDate;
-
+    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss", timezone = "GMT+8")
     private Date updateDate;
 
     public Integer getId() {

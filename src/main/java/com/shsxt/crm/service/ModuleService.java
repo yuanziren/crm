@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ModuleService extends BaseService<Module> {
@@ -21,6 +22,10 @@ public class ModuleService extends BaseService<Module> {
 
     public List<ModuleDto> queryAllModuleByRoleId(Integer roleId){
         return moduleMapper.queryAllModuleByRoleId(roleId);
+    }
+
+    public List<Map> queryModuleByGrade(Integer grade){
+        return moduleMapper.queryModuleByGrade(grade);
     }
 
 
