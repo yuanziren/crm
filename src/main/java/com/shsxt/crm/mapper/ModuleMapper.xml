@@ -196,4 +196,21 @@
     m.grade = #{grade}
   </select>
 
+  <select id="queryModuleByName" parameterType="string" resultMap="BaseResultMap">
+    SELECT * FROM t_module WHERE is_valid = 1 AND module_name = #{moduleName}
+  </select>
+
+  <select id="queryModuleByOptValue" parameterType="string" resultMap="BaseResultMap">
+    SELECT * FROM t_module WHERE is_valid = 1 AND opt_value = #{optValue}
+  </select>
+
+  <update id="deleteModuleByOptValue" parameterType="string">
+    UPDATE t_module SET is_valid=0 where opt_value like concat(#{optValue},'%')
+  </update>
+
+  <select id="queryTotalByOptValue" parameterType="string" resultType="int">
+    SELECT count(*) from t_module where opt_value like concat(#{optValue},'%')
+  </select>
+
+
 </mapper>

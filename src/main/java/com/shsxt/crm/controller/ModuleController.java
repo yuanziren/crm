@@ -1,7 +1,10 @@
 package com.shsxt.crm.controller;
 
 import com.shsxt.crm.base.BaseController;
+import com.shsxt.crm.constants.CrmConstant;
 import com.shsxt.crm.dto.ModuleDto;
+import com.shsxt.crm.model.ResultInfo;
+import com.shsxt.crm.po.Module;
 import com.shsxt.crm.query.ModuleQuery;
 import com.shsxt.crm.service.ModuleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +28,7 @@ public class ModuleController extends BaseController {
         return "module";
     }
 
+    //http://localhost:8080/crm/module/queryAllModuleByRoleId?roleId=1
     @RequestMapping("queryAllModuleByRoleId")
     @ResponseBody
     public List<ModuleDto> queryAllModuleByRoleId(Integer roleId){
@@ -49,5 +53,11 @@ public class ModuleController extends BaseController {
         return moduleService.queryModuleByGrade(grade);
     }
 
+    @RequestMapping("saveOrUpdateModule")
+    @ResponseBody
+    public ResultInfo saveOrUpdateModule(Module module){
+        moduleService.saveOrUpdateModule(module);
+        return success(CrmConstant.OPS_SUCCESS_MSG);
+    }
 
 }
