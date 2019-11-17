@@ -119,4 +119,12 @@
   <select id="queryUserRoleByRoleId" parameterType="int" resultType="int">
     SELECT count(*) FROM t_user_role WHERE role_id=#{roleId}
   </select>
+
+  <delete id="deletePermissionByOptValue" parameterType="string">
+    DELETE FROM t_permission WHERE acl_value like concat(#{optValue},'%')
+  </delete>
+
+  <select id="queryPermissionByOptValue" parameterType="string" resultType="int">
+    SELECT COUNT(*) FROM t_permission WHERE acl_value like concat(#{optValue},'%')
+  </select>
 </mapper>

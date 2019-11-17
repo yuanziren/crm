@@ -80,7 +80,20 @@ public class ModuleService extends BaseService<Module> {
 
     }
 
+    public void deleteModule(Integer id){
+        // 1. 级联删除当前模块
+        Module module = moduleMapper.queryById(id);
+        String optValue = module.getOptValue();
+        Integer total = moduleMapper.queryTotalByOptValue(optValue);
+        if(total>0)
+            AssertUtil.isTrue(moduleMapper.deleteModuleByOptValue(module.getOptValue())<total, CrmConstant.OPS_FAILED_MSG);
 
+        // 2. 级联删除关联权限
+        Integer total02 = permissionMapper.queryPermissionByOptValue(optValue);
+        if(total02>0)
+            AssertUtil.isTrue(permissionMapper.deletePermissionByOptValue(optValue)<total02,CrmConstant.OPS_FAILED_MSG);
+
+    }
 
 
 

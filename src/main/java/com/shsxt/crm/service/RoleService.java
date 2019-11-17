@@ -75,7 +75,7 @@ public class RoleService extends BaseService<Role> {
                 permission.setCreateDate(new Date());
                 permission.setUpdateDate(new Date());
 
-                //permission.setAclValue(moduleMapper.queryById(moduleId).getOptValue());
+                permission.setAclValue(moduleMapper.queryById(moduleId).getOptValue());
 
                 permissionList.add(permission);
             }

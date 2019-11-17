@@ -9,4 +9,6 @@ public interface PermissionMapper extends BaseDao<Permission> {
 
     public Integer deletePermissionByRoleId(Integer roleId);
     public Integer queryPermissionByRoleId(Integer roleId);
+    public Integer deletePermissionByOptValue(String optValue);
+    public Integer queryPermissionByOptValue(String optValue);
 }
