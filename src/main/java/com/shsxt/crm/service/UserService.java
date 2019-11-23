@@ -220,4 +220,8 @@ public class UserService extends BaseService<UserDto> {
         }
     }
 
+    public List<String> queryPermissionsByUserId(Integer userId){
+        return userMapper.queryPermissionsByUserId(userId);
+    }
+
 }

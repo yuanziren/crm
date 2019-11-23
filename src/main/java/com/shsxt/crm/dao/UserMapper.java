@@ -15,4 +15,5 @@ public interface UserMapper extends BaseDao<UserDto> {
     public User queryUserByName(String userName);
     public Integer updateUserPwd(@Param("userPwd") String userPwd, @Param("id") Integer id);
     public List<Map> queryCustomerManagers();
+    public List<String> queryPermissionsByUserId(Integer userId);
 }

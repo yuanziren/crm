@@ -18,10 +18,16 @@
     id, user_name, user_pwd, true_name, email, phone, is_valid, create_date, update_date
   </sql>
   <select id="queryById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    from t_user
-    where id = #{id,jdbcType=INTEGER}
+    SELECT
+    u.*,
+    GROUP_CONCAT(r.role_name) role_name,
+    GROUP_CONCAT(r.id) roleIdStr
+    FROM
+    t_user AS u
+    LEFT JOIN t_user_role AS ur ON ur.user_id = u.id
+    LEFT JOIN t_role AS r ON r.id = ur.role_id
+    where u.id = #{id,jdbcType=INTEGER}
+    GROUP BY u.id
   </select>
   <insert id="save" parameterType="com.shsxt.crm.po.User" useGeneratedKeys="true" keyProperty="id">
     insert into t_user
@@ -161,4 +167,13 @@
   <update id="delete" parameterType="int">
     UPDATE t_user SET is_valid=0 WHERE id=#{id}
   </update>
+  <select id="queryPermissionsByUserId" parameterType="int" resultType="string">
+    SELECT
+    DISTINCT p.acl_value
+    FROM
+    t_user_role AS ur
+    INNER JOIN t_permission AS p ON p.role_id = ur.role_id
+    WHERE
+    ur.user_id = #{userId}
+  </select>
 </mapper>

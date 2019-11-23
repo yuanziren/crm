@@ -87,4 +87,6 @@ public class UserController extends BaseController {
         userService.deleteUserBatch(ids);
         return success(CrmConstant.OPS_SUCCESS_MSG);
     }
+
+
 }
