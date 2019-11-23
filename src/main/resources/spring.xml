@@ -19,8 +19,6 @@
 
     <context:property-placeholder location="classpath:jdbc.properties" />
 
-    <aop:aspectj-autoproxy />
-
 
     <!-- 配置数据源 -->
     <!-- 配置c3p0 数据源 -->

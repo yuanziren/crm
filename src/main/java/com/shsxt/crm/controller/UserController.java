@@ -5,7 +5,6 @@ import com.shsxt.crm.constants.CrmConstant;
 import com.shsxt.crm.dto.UserDto;
 import com.shsxt.crm.model.ResultInfo;
 import com.shsxt.crm.model.UserInfo;
-import com.shsxt.crm.query.SaleChanceQuery;
 import com.shsxt.crm.query.UserQuery;
 import com.shsxt.crm.service.UserService;
 import com.shsxt.crm.utils.LoginUserUtil;

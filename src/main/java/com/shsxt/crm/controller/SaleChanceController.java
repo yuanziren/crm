@@ -1,5 +1,6 @@
 package com.shsxt.crm.controller;
 
+import com.shsxt.crm.annotations.RequestPermission;
 import com.shsxt.crm.base.BaseController;
 import com.shsxt.crm.constants.CrmConstant;
 import com.shsxt.crm.model.ResultInfo;
@@ -34,7 +35,7 @@ public class SaleChanceController extends BaseController {
         }
         return "error";
     }
-
+    @RequestPermission(aclValue = "101001")
     @RequestMapping("querySaleChancesByParams")
     @ResponseBody
     public Map<String, Object> querySaleChancesByParams(
