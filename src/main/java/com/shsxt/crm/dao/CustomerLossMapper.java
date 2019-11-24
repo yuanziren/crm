@@ -1,17 +1,10 @@
 package com.shsxt.crm.dao;
 
+import com.shsxt.crm.base.BaseDao;
 import com.shsxt.crm.po.CustomerLoss;
+import org.springframework.stereotype.Repository;
 
-public interface CustomerLossMapper {
-    int deleteByPrimaryKey(Integer id);
+@Repository
+public interface CustomerLossMapper extends BaseDao<CustomerLoss> {
 
-    int insert(CustomerLoss record);
-
-    int insertSelective(CustomerLoss record);
-
-    CustomerLoss selectByPrimaryKey(Integer id);
-
-    int updateByPrimaryKeySelective(CustomerLoss record);
-
-    int updateByPrimaryKey(CustomerLoss record);
 }

@@ -58,5 +58,12 @@ public class CustomerController extends BaseController {
         return success("操作成功");
     }
 
+    @RequestMapping("addLossCustomer")
+    @ResponseBody
+    public ResultInfo addLossCustomer(){
+        customerService.addLossCustomer();
+        return success("操作成功");
+    }
+
 
 }

@@ -184,33 +184,35 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-  <!--分页查询-->
+  <!-- 分页查询 -->
   <select id="queryByParams" parameterType="SaleChanceQuery" resultMap="BaseResultMap">
-        SELECT * from t_sale_chance
-        <where>
-            is_valid=1
-            <if test="null!=customerName and ''!=customerName">
-                and customer_name like concat('%',#{customerName},'%')
-            </if>
-            <if test="null!=state">
-                and state = #{state}
-            </if>
-            <if test="null!=devResult">
-                and dev_result = #{devResult}
-            </if>
-            <if test="null!=createDate and ''!=createDate">
-                and create_date &lt;= #{createDate}
-            </if>
-        </where>
-    </select>
-  <!--批量删除-->
+    SELECT * from t_sale_chance
+    <where>
+      is_valid=1
+      <if test="null!=customerName and ''!=customerName">
+        and customer_name like concat('%',#{customerName},'%')
+      </if>
+      <if test="null!=state">
+        and state = #{state}
+      </if>
+      <if test="null!=devResult">
+        and dev_result = #{devResult}
+      </if>
+      <if test="null!=createDate and ''!=createDate">
+        and create_date &lt;= #{createDate}
+      </if>
+    </where>
+  </select>
+
+  <!-- 批量删除 -->
   <update id="deleteBatch">
-    UPDATE t_sale_chance SET is_valid=0 WHERE id IN (
+    UPDATE t_sale_chance set is_valid=0 where id in (
     <foreach collection="array" item="item" separator=",">
       #{item}
     </foreach>
     )
   </update>
+
   <!-- 修改状态 -->
   <update id="updateDevResult" parameterType="SaleChance">
     UPDATE t_sale_chance SET dev_result=#{devResult} WHERE id=#{id}

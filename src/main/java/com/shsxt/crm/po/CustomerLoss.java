@@ -12,9 +12,9 @@ public class CustomerLoss {
     private String cusName;
 
     private String cusManager;
-
+    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss", timezone = "GMT+8")
     private Date lastOrderTime;
-
+    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss", timezone = "GMT+8")
     private Date confirmLossTime;
 
     private Integer state;

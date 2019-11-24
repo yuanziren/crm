@@ -34,30 +34,30 @@
     update_date
   </sql>
   <select id="queryById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from t_customer
     where id = #{id,jdbcType=INTEGER}
   </select>
   <insert id="insert" parameterType="com.shsxt.crm.po.Customer" >
-    insert into t_customer (id, khno, name, 
-      area, cus_manager, level, 
-      myd, xyd, address, 
-      post_code, phone, fax, 
-      web_site, yyzzzch, fr, 
-      zczj, nyye, khyh, khzh, 
-      dsdjh, gsdjh, state, 
-      is_valid, create_date, update_date
-      )
-    values (#{id,jdbcType=INTEGER}, #{khno,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
-      #{area,jdbcType=VARCHAR}, #{cusManager,jdbcType=VARCHAR}, #{level,jdbcType=VARCHAR}, 
-      #{myd,jdbcType=VARCHAR}, #{xyd,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
-      #{postCode,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{fax,jdbcType=VARCHAR}, 
-      #{webSite,jdbcType=VARCHAR}, #{yyzzzch,jdbcType=VARCHAR}, #{fr,jdbcType=VARCHAR}, 
-      #{zczj,jdbcType=VARCHAR}, #{nyye,jdbcType=VARCHAR}, #{khyh,jdbcType=VARCHAR}, #{khzh,jdbcType=VARCHAR}, 
-      #{dsdjh,jdbcType=VARCHAR}, #{gsdjh,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER}, 
-      #{isValid,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}
-      )
+    insert into t_customer (id, khno, name,
+    area, cus_manager, level,
+    myd, xyd, address,
+    post_code, phone, fax,
+    web_site, yyzzzch, fr,
+    zczj, nyye, khyh, khzh,
+    dsdjh, gsdjh, state,
+    is_valid, create_date, update_date
+    )
+    values (#{id,jdbcType=INTEGER}, #{khno,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
+    #{area,jdbcType=VARCHAR}, #{cusManager,jdbcType=VARCHAR}, #{level,jdbcType=VARCHAR},
+    #{myd,jdbcType=VARCHAR}, #{xyd,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR},
+    #{postCode,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{fax,jdbcType=VARCHAR},
+    #{webSite,jdbcType=VARCHAR}, #{yyzzzch,jdbcType=VARCHAR}, #{fr,jdbcType=VARCHAR},
+    #{zczj,jdbcType=VARCHAR}, #{nyye,jdbcType=VARCHAR}, #{khyh,jdbcType=VARCHAR}, #{khzh,jdbcType=VARCHAR},
+    #{dsdjh,jdbcType=VARCHAR}, #{gsdjh,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER},
+    #{isValid,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}
+    )
   </insert>
   <insert id="save" parameterType="com.shsxt.crm.po.Customer" >
     insert into t_customer
@@ -310,6 +310,7 @@
       </if>
     </where>
   </select>
+
   <select id="queryDataDicsByDicName" parameterType="string" resultType="map">
     SELECT
     d.data_dic_value as dataDicValue,
@@ -321,6 +322,7 @@
     d.data_dic_name = #{dicName}
 
   </select>
+
   <update id="deleteBatch">
     UPDATE t_customer set is_valid=0 where id in (
     <foreach collection="array" item="item" separator=",">
@@ -329,4 +331,26 @@
     )
   </update>
 
+
+  <select id="queryLossCustomer" resultMap="BaseResultMap">
+    SELECT
+    c.*
+    FROM
+    t_customer as c
+    WHERE
+    c.is_valid = 1
+    AND
+    c.state = 0
+    AND
+    DATE_ADD(c.create_date,INTERVAL 6 MONTH)&lt;NOW()
+    AND
+    c.id not in (
+    SELECT
+    DISTINCT co.cus_id
+    FROM
+    t_customer_order AS co
+    WHERE
+    DATE_ADD(co.order_date,INTERVAL 6 MONTH)>NOW()
+    )
+  </select>
 </mapper>
