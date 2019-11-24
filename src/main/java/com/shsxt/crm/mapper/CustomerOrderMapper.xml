@@ -15,27 +15,13 @@
   <sql id="Base_Column_List" >
     id, cus_id, order_no, order_date, address, state, create_date, update_date, is_valid
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="queryById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from t_customer_order
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from t_customer_order
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="com.shsxt.crm.po.CustomerOrder" >
-    insert into t_customer_order (id, cus_id, order_no, 
-      order_date, address, state, 
-      create_date, update_date, is_valid
-      )
-    values (#{id,jdbcType=INTEGER}, #{cusId,jdbcType=INTEGER}, #{orderNo,jdbcType=VARCHAR}, 
-      #{orderDate,jdbcType=TIMESTAMP}, #{address,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER}, 
-      #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}, #{isValid,jdbcType=INTEGER}
-      )
-  </insert>
-  <insert id="insertSelective" parameterType="com.shsxt.crm.po.CustomerOrder" >
+  <insert id="save" parameterType="com.shsxt.crm.po.CustomerOrder" >
     insert into t_customer_order
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -96,7 +82,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.shsxt.crm.po.CustomerOrder" >
+  <update id="update" parameterType="com.shsxt.crm.po.CustomerOrder" >
     update t_customer_order
     <set >
       <if test="cusId != null" >
@@ -126,16 +112,8 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.shsxt.crm.po.CustomerOrder" >
-    update t_customer_order
-    set cus_id = #{cusId,jdbcType=INTEGER},
-      order_no = #{orderNo,jdbcType=VARCHAR},
-      order_date = #{orderDate,jdbcType=TIMESTAMP},
-      address = #{address,jdbcType=VARCHAR},
-      state = #{state,jdbcType=INTEGER},
-      create_date = #{createDate,jdbcType=TIMESTAMP},
-      update_date = #{updateDate,jdbcType=TIMESTAMP},
-      is_valid = #{isValid,jdbcType=INTEGER}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+
+  <select id="queryByParams" parameterType="CustomerOrderQuery" resultMap="BaseResultMap">
+    SELECT * from t_customer_order WHERE is_valid=1 AND cus_id=#{cusId}
+  </select>
 </mapper>

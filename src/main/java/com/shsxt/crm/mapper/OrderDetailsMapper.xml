@@ -149,4 +149,8 @@
       update_date = #{updateDate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="queryByParams" parameterType="OrderDetailsQuery" resultMap="BaseResultMap">
+    SELECT * from t_order_details WHERE is_valid=1 AND order_id=#{orderId}
+  </select>
 </mapper>

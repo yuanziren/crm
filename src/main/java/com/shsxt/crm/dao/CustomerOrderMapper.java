@@ -1,17 +1,11 @@
 package com.shsxt.crm.dao;
 
+import com.shsxt.crm.base.BaseDao;
 import com.shsxt.crm.po.CustomerOrder;
+import org.springframework.stereotype.Repository;
 
-public interface CustomerOrderMapper {
-    int deleteByPrimaryKey(Integer id);
+@Repository
+public interface CustomerOrderMapper extends BaseDao<CustomerOrder> {
 
-    int insert(CustomerOrder record);
 
-    int insertSelective(CustomerOrder record);
-
-    CustomerOrder selectByPrimaryKey(Integer id);
-
-    int updateByPrimaryKeySelective(CustomerOrder record);
-
-    int updateByPrimaryKey(CustomerOrder record);
 }
