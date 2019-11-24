@@ -25,31 +25,13 @@
     assign_time, service_proce, service_proce_people, service_proce_time, service_proce_result, 
     myd, is_valid, update_date, create_date
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="queryById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from t_customer_serve
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from t_customer_serve
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="com.shsxt.crm.po.CustomerServe" >
-    insert into t_customer_serve (id, serve_type, overview, 
-      customer, state, service_request, 
-      create_people, assigner, assign_time, 
-      service_proce, service_proce_people, service_proce_time, 
-      service_proce_result, myd, is_valid, 
-      update_date, create_date)
-    values (#{id,jdbcType=INTEGER}, #{serveType,jdbcType=VARCHAR}, #{overview,jdbcType=VARCHAR}, 
-      #{customer,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR}, #{serviceRequest,jdbcType=VARCHAR}, 
-      #{createPeople,jdbcType=VARCHAR}, #{assigner,jdbcType=VARCHAR}, #{assignTime,jdbcType=TIMESTAMP}, 
-      #{serviceProce,jdbcType=VARCHAR}, #{serviceProcePeople,jdbcType=VARCHAR}, #{serviceProceTime,jdbcType=TIMESTAMP}, 
-      #{serviceProceResult,jdbcType=VARCHAR}, #{myd,jdbcType=VARCHAR}, #{isValid,jdbcType=INTEGER}, 
-      #{updateDate,jdbcType=TIMESTAMP}, #{createDate,jdbcType=TIMESTAMP})
-  </insert>
-  <insert id="insertSelective" parameterType="com.shsxt.crm.po.CustomerServe" >
+  <insert id="save" parameterType="com.shsxt.crm.po.CustomerServe" >
     insert into t_customer_serve
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -158,7 +140,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.shsxt.crm.po.CustomerServe" >
+  <update id="update" parameterType="com.shsxt.crm.po.CustomerServe" >
     update t_customer_serve
     <set >
       <if test="serveType != null" >
@@ -212,24 +194,24 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.shsxt.crm.po.CustomerServe" >
-    update t_customer_serve
-    set serve_type = #{serveType,jdbcType=VARCHAR},
-      overview = #{overview,jdbcType=VARCHAR},
-      customer = #{customer,jdbcType=VARCHAR},
-      state = #{state,jdbcType=VARCHAR},
-      service_request = #{serviceRequest,jdbcType=VARCHAR},
-      create_people = #{createPeople,jdbcType=VARCHAR},
-      assigner = #{assigner,jdbcType=VARCHAR},
-      assign_time = #{assignTime,jdbcType=TIMESTAMP},
-      service_proce = #{serviceProce,jdbcType=VARCHAR},
-      service_proce_people = #{serviceProcePeople,jdbcType=VARCHAR},
-      service_proce_time = #{serviceProceTime,jdbcType=TIMESTAMP},
-      service_proce_result = #{serviceProceResult,jdbcType=VARCHAR},
-      myd = #{myd,jdbcType=VARCHAR},
-      is_valid = #{isValid,jdbcType=INTEGER},
-      update_date = #{updateDate,jdbcType=TIMESTAMP},
-      create_date = #{createDate,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+
+  <select id="queryByParams" parameterType="CustomerServeQuery" resultMap="BaseResultMap">
+    SELECT * from t_customer_serve
+    <where>
+      is_valid=1
+      <if test="null!=customer and ''!=customer">
+        and customer like concat('%',#{customer},'%')
+      </if>
+      <if test="null!=myd">
+        and myd = #{myd}
+      </if>
+      <if test="null!=state">
+        and state = #{state}
+      </if>
+      <if test="null!=createDate and ''!=createDate">
+        and create_date &lt;= #{createDate}
+      </if>
+    </where>
+  </select>
+
 </mapper>
