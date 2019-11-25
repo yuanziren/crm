@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shsxt.crm.dao.ReportMapper" >
+
+  <select id="queryCustomerLevel" resultType="map">
+    SELECT
+    count(c.`name`) value,
+    c.`level` as name
+    FROM
+    t_customer AS c
+    GROUP BY(c.`level`)
+  </select>
+</mapper>
