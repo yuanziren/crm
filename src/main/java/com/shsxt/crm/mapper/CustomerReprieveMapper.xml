@@ -12,25 +12,17 @@
   <sql id="Base_Column_List" >
     id, loss_id, measure, is_valid, create_date, update_date
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
+  <select id="queryById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
     <include refid="Base_Column_List" />
     from t_customer_reprieve
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from t_customer_reprieve
+  <update id="delete" parameterType="java.lang.Integer" >
+    UPDATE t_customer_reprieve SET is_valid=0
     where id = #{id,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="com.shsxt.crm.po.CustomerReprieve" >
-    insert into t_customer_reprieve (id, loss_id, measure, 
-      is_valid, create_date, update_date
-      )
-    values (#{id,jdbcType=INTEGER}, #{lossId,jdbcType=INTEGER}, #{measure,jdbcType=VARCHAR}, 
-      #{isValid,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}
-      )
-  </insert>
-  <insert id="insertSelective" parameterType="com.shsxt.crm.po.CustomerReprieve" >
+  </update>
+  <insert id="save" parameterType="com.shsxt.crm.po.CustomerReprieve" >
     insert into t_customer_reprieve
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -73,7 +65,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.shsxt.crm.po.CustomerReprieve" >
+  <update id="update" parameterType="com.shsxt.crm.po.CustomerReprieve" >
     update t_customer_reprieve
     <set >
       <if test="lossId != null" >
@@ -94,13 +86,8 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.shsxt.crm.po.CustomerReprieve" >
-    update t_customer_reprieve
-    set loss_id = #{lossId,jdbcType=INTEGER},
-      measure = #{measure,jdbcType=VARCHAR},
-      is_valid = #{isValid,jdbcType=INTEGER},
-      create_date = #{createDate,jdbcType=TIMESTAMP},
-      update_date = #{updateDate,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+
+  <select id="queryByParams" parameterType="CustomerReprieveQuery" resultMap="BaseResultMap">
+    SELECT * from t_customer_reprieve WHERE is_valid=1 AND loss_id=#{lossId}
+  </select>
 </mapper>

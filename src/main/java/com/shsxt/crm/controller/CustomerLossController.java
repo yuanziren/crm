@@ -1,6 +1,9 @@
 package com.shsxt.crm.controller;
 
 import com.shsxt.crm.base.BaseController;
+import com.shsxt.crm.constants.CrmConstant;
+import com.shsxt.crm.model.ResultInfo;
+import com.shsxt.crm.po.CustomerLoss;
 import com.shsxt.crm.query.CustomerLossQuery;
 import com.shsxt.crm.service.CustomerLossService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +35,13 @@ public class CustomerLossController extends BaseController {
         query.setPageNum(page);
         query.setPageSize(rows);
         return customerLossService.queryForPage(query);
+    }
+
+    @RequestMapping("updateCustomerLoss")
+    @ResponseBody
+    public ResultInfo updateCustomerLoss(CustomerLoss customerLoss) {
+        customerLossService.update(customerLoss);
+        return success(CrmConstant.OPS_SUCCESS_MSG);
     }
 
 
